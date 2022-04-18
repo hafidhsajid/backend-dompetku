@@ -44,10 +44,43 @@ app.get('/api/history', (req, res) => {
         res.status(200).json({ success: true, data: rows });
     });
 });
-app.delete('/api/history/:id', (req, res) => {
-    // buat query sql untuk mencari data dan hapus
+// app.delete('/api/history/:id', (req, res) => {
+//     // buat query sql untuk mencari data dan hapus
+//     const querySearch = 'SELECT * FROM history WHERE id = ?';
+//     const queryDelete = 'DELETE FROM history WHERE id = ?';
+
+//     // jalankan query untuk melakukan pencarian data
+//     koneksi.query(querySearch, req.params.id, (err, rows, field) => {
+//         // error handling
+//         if (err) {
+//             return res.status(500).json({ message: 'Ada kesalahan', error: err });
+//         }
+
+//         // jika id yang dimasukkan sesuai dengan data yang ada di db
+//         if (rows.length) {
+//             // jalankan query delete
+//             koneksi.query(queryDelete, req.params.id, (err, rows, field) => {
+//                 // error handling
+//                 if (err) {
+//                     return res.status(500).json({ message: 'Ada kesalahan', error: err });
+//                 }
+
+//                 // jika delete berhasil
+//                 res.status(200).json({ success: true, message: 'Berhasil hapus data!' });
+//             });
+//         } else {
+//             return res.status(404).json({ message: 'Data tidak ditemukan!', success: false });
+//         }
+//     });
+// });
+
+
+// update data
+app.put('/api/history/:id', (req, res) => {
+    // buat variabel penampung data dan query sql
+    const data = { ...req.body };
     const querySearch = 'SELECT * FROM history WHERE id = ?';
-    const queryDelete = 'DELETE FROM history WHERE id = ?';
+    const queryUpdate = 'UPDATE history SET ? WHERE id = ?';
 
     // jalankan query untuk melakukan pencarian data
     koneksi.query(querySearch, req.params.id, (err, rows, field) => {
@@ -58,21 +91,22 @@ app.delete('/api/history/:id', (req, res) => {
 
         // jika id yang dimasukkan sesuai dengan data yang ada di db
         if (rows.length) {
-            // jalankan query delete
-            koneksi.query(queryDelete, req.params.id, (err, rows, field) => {
+            // jalankan query update
+            koneksi.query(queryUpdate, [data, req.params.id], (err, rows, field) => {
                 // error handling
                 if (err) {
                     return res.status(500).json({ message: 'Ada kesalahan', error: err });
                 }
 
-                // jika delete berhasil
-                res.status(200).json({ success: true, message: 'Berhasil hapus data!' });
+                // jika update berhasil
+                res.status(200).json({ success: true, message: 'Berhasil update data!' });
             });
         } else {
             return res.status(404).json({ message: 'Data tidak ditemukan!', success: false });
         }
     });
 });
+
 
 // buat server nya
 app.listen(PORT, () => console.log(`Server running at port: ${PORT}`));
