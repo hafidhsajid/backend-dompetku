@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const koneksi = require('./database');
+const koneksi = require('./database1');
 const app = express();
 const PORT = process.env.PORT || 5000;// set body parser
 
@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.post('/api/history', (req, res) => {
     // buat variabel penampung data dan query sql
     const data = { ...req.body };
+    data.create_time = new Date()
     const querySql = 'INSERT INTO history SET ?';
 
     // jalankan query
