@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const koneksi = require('./database1');
+const koneksi = require('./database');
 const app = express();
 const PORT = process.env.PORT || 5000;// set body parser
 
